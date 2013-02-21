@@ -17,8 +17,9 @@
 		<script src="js/jquery.ui.touch.punch.min.js"></script>
         
         <style type="text/css">
-		body {
+		body, html {
 			overflow-y: hidden;
+			overflow-x: hidden;
 		}
 		
 		#dragStart {
@@ -142,6 +143,7 @@
 						$("#sheep1").fadeOut('slow', function() {
 							walkInNextSheep();
 							soundPlayer.Sheep();
+							soundPlayer.Sheep2();
 							
 							var my_media = new Media("sounds/sheep.wav", onSuccess, onError);
 							my_media.play();
@@ -161,7 +163,7 @@
 				}
 				
 				function onError() {
-					alert("error playing sound");
+					 alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
 				}
 			</script>
             
