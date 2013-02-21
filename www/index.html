@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Activities for Kids</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.1.custom.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.1.2.min.css" />         
+		<link rel="stylesheet" href="css/style.css" />         
+                        
+        <script src="js/jquery.1.8.2.min.js"></script>
+		<script src="js/jquery-ui-1.10.1.custom.min.js"></script>   
+        <script src="js/jquery.mobile.1.2.min.js"></script>  
+        <script src="js/sounds.js"></script>
+        <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+		<!--<script src="GAPlugin.js"></script>-->
+		<script src="js/jquery.ui.touch.punch.min.js"></script>
+        
+        <style type="text/css">
+		body {
+			overflow-y: hidden;
+		}
+		
+		#dragStart {
+			float:left;
+			width:80px;
+			height:80px;
+			padding: 6px;
+			text-align: center;
+		}
+		#dropStart {
+			float:right;
+			width:100px;
+			height:100px;
+			padding: 6px;
+			text-align: center;
+		}
+		</style>
+        
+		<script type="text/javascript" charset="utf-8">
+						
+			$(function() {
+				// on exit
+				// gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
+				$( "#dragStart" ).draggable();
+				$( "#dropStart" ).droppable({
+				  drop: function( event, ui ) {
+					$( this ).addClass( "ui-state-highlight" ).find( "p" ).html( "Dropped!" );
+					$("#dragStart").fadeOut('slow', function() {
+						$.mobile.changePage("#pageGame1");
+					});					
+				  }
+				});
+			});
+			
+			var gaPlugin;
+			document.addEventListener("deviceready", myDeviceReadyListener, false);
+			
+			function myDeviceReadyListener() {			
+				//gaPlugin = window.plugins.gaPlugin;
+				//gaPlugin.init(gaSuccess, gaError, "UA-23823097-4", 10);
+				//23823097-4 <-- web property
+				//23823097-3 <-- app property
+			} 
+			
+			function gaSuccess() {
+				try
+				{
+					gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "index.html");
+					$("#gaResults").html("<span class='success'>GA tracked pageview!</span>");
+					$("#pageHome ul li a").off("click").on("click", function() {
+						gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, $(this).attr("href") );
+					});
+				} catch (e) {
+					$("#gaResults").html("<span class='error'>GA could not track pageview - " + e + "</span>");
+				}
+			}
+			
+			function gaError() {
+				$("#gaResults").append("<span class='error'>GA error</span>");
+			}
+			
+			function nativePluginResultHandler(obj) {
+				$("#gaResults").append("<br /><span class='warn'>GA Plugin Result - ");
+				if (obj != undefined) {
+					$("#gaResults").append(obj);
+				}
+				$("#gaResults").append("</span>");
+			}
+			
+			function nativePluginErrorHandler() {
+				$("#gaResults").append("<span class='error'>GA Plugin Error Result</span>");
+			}
+		</script>
+		
+    </head>
+    <body>
+
+		<div data-role="page" id="pageHome" data-cache="never">
+        	<script>
+				$("#pageHome").bind('pageshow', function() {
+					var h = $(window).height();
+					var offsetH = $("#pageHome .ui-header").height() + 36;
+					//alert(h + " / " + offsetH);
+					$("#pageHome .ui-content").css("height", h - offsetH );
+				});
+			</script>
+        
+			<div data-role="header">
+				<h1>Activities for Kids</h1>
+			</div><!-- /header -->
+
+			<div data-role="content" style="overflow:hidden;">	
+				
+                
+                <div id="dragStart" class="ui-widget-content">
+                  <p>Drag to Start</p>
+                </div>
+                 
+                <div id="dropStart" class="ui-widget-header">
+                  <p>Drop here</p>
+                </div>
+
+			</div><!-- /content -->
+
+		</div><!-- /page -->
+        
+        <div data-role="page" id="pageGame1" data-cache="never" style="overflow:hidden;">
+        	<script>
+				var sheepCounted = 0;
+				var soundPlayer = new SoundPlayer();
+				
+				$("#pageGame1").bind('pageshow', function() {
+				
+					$( "#sheep1" ).draggable();
+					$( "#flock" ).droppable({
+					  drop: function( event, ui ) {
+						//$( this ).addClass( "ui-state-highlight" ).find( "p" ).html( "Dropped!" );
+						sheepCounted++;
+						$(".ui-header .ui-title").html(sheepCounted);
+						
+						$("#sheep1").fadeOut('slow', function() {
+							walkInNextSheep();
+							soundPlayer.Sheep();
+						});					
+					  }
+					});
+				
+					walkInNextSheep();
+				});
+				
+				function walkInNextSheep() {
+					$("#sheep1").css({ "left": "-100px", "bottom": "50px" }).show().animate({"left":"60px", "bottom" : "50px" }, "slow");
+				}
+			</script>
+            
+            <style type="text/css">
+				#sheep1 {
+					background:transparent url(images/sheep-1.png) center center no-repeat; 
+					position: absolute; left: -100px; bottom: 50px; 
+					width: 103px; height: 103px;
+				}
+				#flock {
+					position: absolute; 
+					right: 20px; 
+					bottom: 40px;
+					width: 260px; height: 200px;
+					/*border: 1px solid red;*/
+				}
+			</style>
+        
+			<div data-role="header">
+				<h1>Help the Sheep!</h1>
+			</div><!-- /header -->
+
+			<div data-role="content" style="overflow:hidden; padding: 0px!important;">
+            	<div style="position: relative; width: 100%; height: 100%;">
+                	<img src="images/count-sheep.png" width="100%" height="100%" />
+                	<div id="sheep1">&nbsp;</div>
+                    <div id="flock">&nbsp;</div>
+                </div> 
+			</div><!-- /content -->
+
+		</div><!-- /page -->
+    	
+    </body>
+</html>
