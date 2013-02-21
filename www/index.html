@@ -142,11 +142,16 @@
 						
 						$("#sheep1").fadeOut('slow', function() {
 							walkInNextSheep();
-							soundPlayer.Sheep();
-							soundPlayer.Sheep2();
 							
-							var my_media = new Media("sounds/sheep.wav", onSuccess, onError);
-							my_media.play();
+							try {
+								soundPlayer.Sheep();
+								//soundPlayer.Sheep2();
+								
+								//var my_media = new Media("sounds/sheep.wav", onSuccess, onError);
+								//my_media.play();
+							} catch (e) {
+							
+							}
 						});					
 					  }
 					});
