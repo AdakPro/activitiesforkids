@@ -12,7 +12,7 @@
 		<script src="js/jquery-ui-1.10.1.custom.min.js"></script>   
         <script src="js/jquery.mobile.1.2.min.js"></script>  
         <script src="js/sounds.js"></script>
-        <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 		<!--<script src="GAPlugin.js"></script>-->
 		<script src="js/jquery.ui.touch.punch.min.js"></script>
         
@@ -142,6 +142,9 @@
 						$("#sheep1").fadeOut('slow', function() {
 							walkInNextSheep();
 							soundPlayer.Sheep();
+							
+							var my_media = new Media("sounds/sheep.wav", onSuccess, onError);
+							my_media.play();
 						});					
 					  }
 					});
@@ -151,6 +154,14 @@
 				
 				function walkInNextSheep() {
 					$("#sheep1").css({ "left": "-100px", "bottom": "50px" }).show().animate({"left":"60px", "bottom" : "50px" }, "slow");
+				}
+				
+				function onSuccess() {
+				
+				}
+				
+				function onError() {
+					alert("error playing sound");
 				}
 			</script>
             
