@@ -17,25 +17,25 @@
 		<script src="js/jquery.ui.touch.punch.min.js"></script>
         
         <style type="text/css">
-		body, html {
-			overflow-y: hidden;
-			overflow-x: hidden;
-		}
-		
-		#dragStart {
-			float:left;
-			width:80px;
-			height:80px;
-			padding: 6px;
-			text-align: center;
-		}
-		#dropStart {
-			float:right;
-			width:100px;
-			height:100px;
-			padding: 6px;
-			text-align: center;
-		}
+			body, html {
+				overflow-y: hidden;
+				overflow-x: hidden;
+			}
+			
+			#dragStart {
+				float:left;
+				width:80px;
+				height:80px;
+				padding: 6px;
+				text-align: center;
+			}
+			#dropStart {
+				float:right;
+				width:100px;
+				height:100px;
+				padding: 6px;
+				text-align: center;
+			}
 		</style>
         
 		<script type="text/javascript" charset="utf-8">
@@ -92,6 +92,12 @@
 			function nativePluginErrorHandler() {
 				$("#gaResults").append("<span class='error'>GA Plugin Error Result</span>");
 			}
+			
+			function getPhoneGapPath() {
+				var path = window.location.pathname;
+				path = path.substr( path, path.length - 10 );
+				return 'file://' + path;
+			};
 		</script>
 		
     </head>
@@ -133,22 +139,27 @@
 				
 				$("#pageGame1").bind('pageshow', function() {
 				
+					alert(getPhoneGapPath());
+				
 					$( "#sheep1" ).draggable();
 					$( "#flock" ).droppable({
 					  drop: function( event, ui ) {
 						//$( this ).addClass( "ui-state-highlight" ).find( "p" ).html( "Dropped!" );
 						sheepCounted++;
-						$(".ui-header .ui-title").html(sheepCounted);
+						$("#sheepCount").html(sheepCounted);
 						
 						$("#sheep1").fadeOut('slow', function() {
 							walkInNextSheep();
 							
+							var $flockedSheep = $("<img src='images/count-sheep/sheep-1.png' class='flockedSheep' />");
+							var bottomRandom = getRandomInt(0, 120);
+							var rightRandom = getRandomInt(0, 290);
+							var sizeRandom = getRandomInt(60, 100);
+							$($flockedSheep).css({ "height": sizeRandom + "px", "width": sizeRandom + "px", "right": rightRandom + "px", "bottom": bottomRandom + "px", "z-index": 50 - sheepCounted});
+							$("#scene-container").append($flockedSheep);
+							
 							try {
-								soundPlayer.Sheep();
-								//soundPlayer.Sheep2();
-								
-								//var my_media = new Media("sounds/sheep.wav", onSuccess, onError);
-								//my_media.play();
+								soundPlayer.SheepPG();								
 							} catch (e) {
 							
 							}
@@ -163,37 +174,97 @@
 					$("#sheep1").css({ "left": "-100px", "bottom": "50px" }).show().animate({"left":"60px", "bottom" : "50px" }, "slow");
 				}
 				
-				function onSuccess() {
-				
+				function getRandomInt (min, max) {
+					return Math.floor(Math.random() * (max - min + 1)) + min;
 				}
+
 				
-				function onError() {
-					 alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-				}
 			</script>
             
             <style type="text/css">
+				#scene-container {
+					position: relative; 
+					width: 100%;; 
+					height: 480px;
+					background-color: #000;
+				}
 				#sheep1 {
-					background:transparent url(images/sheep-1.png) center center no-repeat; 
+					background:transparent url(images/count-sheep/sheep-1.png) center center no-repeat; 
 					position: absolute; left: -100px; bottom: 50px; 
 					width: 103px; height: 103px;
+					z-index: 6;
+				}
+				.flockedSheep {
+					position: absolute;
+					z-index: 5;
 				}
 				#flock {
 					position: absolute; 
-					right: 20px; 
-					bottom: 40px;
-					width: 260px; height: 200px;
-					/*border: 1px solid red;*/
+					right: 10px; 
+					bottom: 10px;
+					width: 31%; 
+					height: 42%;
+					border: 1px solid red;
+					z-index: 6;
+				}
+				#moon {
+					height: 140px;
+					width: 140px;
+					background: transparent url(images/count-sheep/moon.png) top left no-repeat;
+					position: absolute;
+					top: 10px;
+					right: 40px;
+				}
+				#sheepCount {
+					width: 94%;
+					position: relative;
+					top: 60px;
+					font-weight: bold;
+					text-align: center;
+				}
+				#fence {
+					height: 270px;
+					width: 409px;
+					background: transparent url(images/count-sheep/fence.png) left bottom no-repeat;
+					position: absolute;
+					bottom: 0px;
+					left: 27%;
+					z-index: 5;
+				}
+				#foreground {
+					height: 225px;
+					width: 800px;
+					background: transparent url(images/count-sheep/foreground.png) left bottom no-repeat;
+					position: absolute;
+					left: 0px;
+					bottom: 0px;						
+					z-index: 4;
+				}
+				#sunset {
+					height: 480px;
+					width: 628px;
+					background: transparent url(images/count-sheep/sunset.png) left top no-repeat;
+					position: absolute;
+					top: 0px;
+					left: 0px;
+					z-index: 1;
 				}
 			</style>
         
-			<div data-role="header">
+			<!-- <div data-role="header">
 				<h1>Help the Sheep!</h1>
-			</div><!-- /header -->
+			</div>/header -->
 
 			<div data-role="content" style="overflow:hidden; padding: 0px!important;">
-            	<div style="position: relative; width: 100%; height: 100%;">
-                	<img src="images/count-sheep.png" width="100%" height="100%" />
+            	<div id="scene-container">
+                	<!--<img src="images/count-sheep/count-sheep.png" width="100%" height="100%" />-->
+                    <div id="moon">
+                    	<div id="sheepCount"></div>
+                    </div>
+                    <div id="fence"></div>
+                    <div id="foreground"></div>
+                    <div id="sunset"></div>
+                    
                 	<div id="sheep1">&nbsp;</div>
                     <div id="flock">&nbsp;</div>
                 </div> 
