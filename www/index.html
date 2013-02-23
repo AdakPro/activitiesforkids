@@ -214,14 +214,14 @@
 				var sheepCounted = 0;
 				var soundPlayer = new SoundPlayer();
 				
-				$("#pageGame1").bind('pagebeforeshow', function() {
+				$("#pageGame1").bind('pagebeforeshow', function() {				
 					$("#scene-container, #sunset").css({ "width": $(window).width(), "height": $(window).height() });
-					$("#foreground").css({ "height": ($(window).width() * .3), "width": $(window).width() });
+					$("#foreground").css({ "height": ($(window).height() * .3), "width": $(window).width() });
 					$("#fence").css({ "bottom": 225 - ($(window).height() * .3) });
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
-								
+								alert($(window).height() + " / " + $(window).height() * .3 + " .. " + 225 - $(window).height() * .3);
 					$( "#sheep1" ).draggable();
 					$( "#flock" ).droppable({
 					  drop: function( event, ui ) {
