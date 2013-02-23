@@ -27,23 +27,30 @@
 				text-align: center;
 				background-color: #CCCCCC;
 			}
+			
+			.ui-page .ui-content {
+				overflow:hidden; 
+				padding: 0px!important;
+			}
 		</style>
         
 		<script type="text/javascript" charset="utf-8">
-						
+									
 			$(function() {
 				// on exit
-				// gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);				
+				try {
+					gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);				
+				} finally {
+				}				
 			});
 			
 			var gaPlugin;
 			document.addEventListener("deviceready", myDeviceReadyListener, false);
 			
 			function myDeviceReadyListener() {			
-				//gaPlugin = window.plugins.gaPlugin;
-				//gaPlugin.init(gaSuccess, gaError, "UA-23823097-4", 10);
-				//23823097-4 <-- web property
-				//23823097-3 <-- app property
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(gaSuccess, gaError, "UA-23823097-5", 10);
+				//23823097-5 <-- web property
 			} 
 			
 			function gaSuccess() {
@@ -51,28 +58,28 @@
 				{
 					gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "index.html");
 					$("#gaResults").html("<span class='success'>GA tracked pageview!</span>");
-					$("#pageHome ul li a").off("click").on("click", function() {
-						gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, $(this).attr("href") );
-					});
+					//$("#pageHome ul li a").off("click").on("click", function() {
+					//	gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, $(this).attr("href") );
+					//});
 				} catch (e) {
-					$("#gaResults").html("<span class='error'>GA could not track pageview - " + e + "</span>");
+					//$("#gaResults").html("<span class='error'>GA could not track pageview - " + e + "</span>");
 				}
 			}
 			
 			function gaError() {
-				$("#gaResults").append("<span class='error'>GA error</span>");
+				//$("#gaResults").append("<span class='error'>GA error</span>");
 			}
 			
 			function nativePluginResultHandler(obj) {
-				$("#gaResults").append("<br /><span class='warn'>GA Plugin Result - ");
+				//$("#gaResults").append("<br /><span class='warn'>GA Plugin Result - ");
 				if (obj != undefined) {
-					$("#gaResults").append(obj);
+				//	$("#gaResults").append(obj);
 				}
-				$("#gaResults").append("</span>");
+				//$("#gaResults").append("</span>");
 			}
 			
 			function nativePluginErrorHandler() {
-				$("#gaResults").append("<span class='error'>GA Plugin Error Result</span>");
+				//$("#gaResults").append("<span class='error'>GA Plugin Error Result</span>");
 			}
 			
 			function getPhoneGapPath() {
@@ -134,17 +141,17 @@
                     </tr>
                     <tr>
                     	<td>
-                        	<div id="" class="gameTile" data-game-page="">
+                        	<div id="" class="gameTile" data-game-page="pageGame3">
                                 <img src="icon.png" />
                             </div>
                         </td>
                         <td>
-                        	<div id="" class="gameTile" data-game-page="">
+                        	<div id="" class="gameTile" data-game-page="pageGame4">
                                 <img src="icon.png" />
                             </div>
                         </td>
                         <td>
-                        	<div id="" class="gameTile" data-game-page="">
+                        	<div id="" class="gameTile" data-game-page="pageGame5">
                                 <img src="icon.png" />
                             </div>
                         </td>
@@ -169,10 +176,13 @@
 				var sheepCounted = 0;
 				var soundPlayer = new SoundPlayer();
 				
+				$("#pageGame1").bind('pagebeforeshow', function() {
+					$("#scene-container, #sunset").css({ "width": $(window).width(), "height": $(window).height() });
+					
+				});
+				
 				$("#pageGame1").bind('pageshow', function() {
-				
-					alert(getPhoneGapPath());
-				
+								
 					$( "#sheep1" ).draggable();
 					$( "#flock" ).droppable({
 					  drop: function( event, ui ) {
@@ -217,7 +227,6 @@
 				#scene-container {
 					position: relative; 
 					width: 100%;; 
-					height: 480px;
 					background-color: #000;
 				}
 				#sheep1 {
@@ -273,8 +282,6 @@
 					z-index: 4;
 				}
 				#sunset {
-					height: 480px;
-					width: 628px;
 					background: transparent url(images/count-sheep/sunset.png) left top no-repeat;
 					position: absolute;
 					top: 0px;
@@ -287,7 +294,7 @@
 				<h1>Help the Sheep!</h1>
 			</div>/header -->
 
-			<div data-role="content" style="overflow:hidden; padding: 0px!important;">
+			<div data-role="content">
             	<div id="scene-container">
                 	<!--<img src="images/count-sheep/count-sheep.png" width="100%" height="100%" />-->
                     <div id="moon">
@@ -307,27 +314,12 @@
         <div data-role="page" id="pageGame2">
         	<script type="text/javascript">
 				$("#pageGame2").bind("pagebeforeshow", function() {
-					
-					$("#divWindowHeight").html( $(window).height() );
-					$("#divWindowWidth").html( $(window).width() );
-					
-					$("#divWindowInnerHeight").html( window.innerHeight );
-					$("#divWindowInnerWidth").html( window.innerWidth );
-					
+					$("#test1").css({ "width": ($(window).width() - 1) + "px", "height": ($(window).height() - 1) + "px", "border": "2px solid red" });
 				});
 			</script>
         	        	
         	<div data-role="content">
-            	<div>Window Height: <div id="divWindowHeight"></div></div>
-                <br />
-                <div>Window Width: <div id="divWindowWidth"></div></div>
-                
-                <br />
-                <br />
-                
-                <div>Window InnerHeight: <div id="divWindowInnerHeight"></div></div>
-                <br />
-                <div>Window InnerWidth: <div id="divWindowInnerWidth"></div></div>
+            	<div id="test1"></div>                
             </div>
         
         </div> <!-- /page -->
