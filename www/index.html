@@ -95,6 +95,24 @@
 					// not an app
 				}
 			}
+			
+			// Play audio
+			//
+			function playAudio(url) {
+				// Play the audio file at url
+				var my_media = new Media(url,
+					// success callback
+					function() {
+						alert("playAudio():Audio Success");
+					},
+					// error callback
+					function(err) {
+						alert("playAudio():Audio Error: " + err);
+				});
+			
+				// Play audio
+				my_media.play();
+			}
 		</script>
 		
     </head>
@@ -125,6 +143,17 @@
 					});
 				});				
 			</script>
+            
+            <style type="text/css">
+				.gameTile img {
+					-moz-border-radius: 10px;
+					border-radius: 10px;
+					background-color: #ccc;
+					border: 1px solid #ddd;
+					width: 128px;
+					height: 128px;
+				}
+			</style>
         
 			<div data-role="header" data-theme="b">
 				<h1>Fun Activities For Kids</h1>
@@ -133,8 +162,8 @@
 			<div data-role="content" style="overflow:hidden;">	
 				
                 <table style="width: 100%; height: 100%; text-align: center;" cellpadding="4" cellspacing="1">
-                	<tr>
-                    	<td>
+                	<tr style="height: 50%;">
+                    	<td style="width: 33%;">
                         	<div id="" class="gameTile" data-game-page="pageGame1">
                                 <img src="icon.png" />
                             </div>
@@ -142,26 +171,26 @@
                         <td id="dropStart">
                            	<p>Drop here</p>                           
                         </td>
-                        <td>
+                        <td style="width: 33%;">
                         	<div id="" class="gameTile" data-game-page="pageGame2">
-                                <img src="icon.png" />
+                                <img alt="Game 2" />
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                    	<td>
+                    <tr style="height: 50%;">
+                    	<td style="width: 33%;">
                         	<div id="" class="gameTile" data-game-page="pageGame3">
-                                <img src="icon.png" />
+                                <img alt="Game 3" />
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 33%;">
                         	<div id="" class="gameTile" data-game-page="pageGame4">
-                                <img src="icon.png" />
+                                <img alt="Game 4" />
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 33%;">
                         	<div id="" class="gameTile" data-game-page="pageGame5">
-                                <img src="icon.png" />
+                                <img alt="Game 5" />
                             </div>
                         </td>
                     </tr>
@@ -207,13 +236,7 @@
 							var rightRandom = getRandomInt(0, 290);
 							var sizeRandom = getRandomInt(60, 100);
 							$($flockedSheep).css({ "height": sizeRandom + "px", "width": sizeRandom + "px", "right": rightRandom + "px", "bottom": bottomRandom + "px", "z-index": 50 - sheepCounted});
-							$("#scene-container").append($flockedSheep);
-							
-							try {
-								soundPlayer.SheepPG();								
-							} catch (e) {
-							
-							}
+							$("#scene-container").append($flockedSheep);							
 						});					
 					  }
 					});
@@ -223,6 +246,8 @@
 				
 				function walkInNextSheep() {
 					$("#sheep1").css({ "left": "-100px", "bottom": "50px" }).show().animate({"left":"60px", "bottom" : "50px" }, "slow");
+					var soundUrl = getPhoneGapPath() + "sounds/sheep.wav";
+					playAudio(soundUrl);
 				}
 				
 				function getRandomInt (min, max) {
@@ -336,41 +361,41 @@
         <div data-role="page" id="pageGame3">
         	<script type="text/javascript">
 				$("#pageGame3").bind("pagebeforeshow", function() {
-					
-					$("#btnSound1").on('click', function() {						
-						var soundUrl = getPhoneGapPath() + "sounds/sheep.wav";
-						playAudio(soundUrl);
-					});
-					
-					$("#btnSound1").on('click', function() {
-						var soundUrl = getPhoneGapPath() + "sounds/chimp.wav";
-						playAudio(soundUrl);
-					});
-					
-				});
+										
+				});			
 				
-				// Play audio
-				//
-				function playAudio(url) {
-					// Play the audio file at url
-					var my_media = new Media(url,
-						// success callback
-						function() {
-							alert("playAudio():Audio Success");
-						},
-						// error callback
-						function(err) {
-							alert("playAudio():Audio Error: " + err);
-					});
-				
-					// Play audio
-					my_media.play();
-				}
 			</script>
         	        	
         	<div data-role="content">
-            	<button id="btnSound1" data-role="button">Sound 1</button>
-                <button id="btnSound2" data-role="button">Sound 2</button>
+				<p>game 3</p>
+            </div>
+        
+        </div> <!-- /page -->
+        
+        <div data-role="page" id="pageGame4">
+        	<script type="text/javascript">
+				$("#pageGame4").bind("pagebeforeshow", function() {
+					
+				});			
+				
+			</script>
+        	        	
+        	<div data-role="content">
+				<p>game 4</p>
+            </div>
+        
+        </div> <!-- /page -->
+        
+        <div data-role="page" id="pageGame5">
+        	<script type="text/javascript">
+				$("#pageGame5").bind("pagebeforeshow", function() {
+										
+				});			
+				
+			</script>
+        	        	
+        	<div data-role="content">
+				<p>Game 5</p>
             </div>
         
         </div> <!-- /page -->
