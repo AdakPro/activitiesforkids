@@ -86,7 +86,15 @@
 				var path = window.location.pathname;
 				path = path.substr( path, path.length - 10 );
 				return 'file://' + path;
-			};
+			}
+			
+			function trackPageUrl(pageUrl) {
+				try {
+					gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, pageUrl );
+				} catch (e) {
+					// not an app
+				}
+			}
 		</script>
 		
     </head>
@@ -110,6 +118,7 @@
 						$( this ).find( "p" ).html( "Lets Play!" );
 						$(ui.draggable).fadeOut('slow', function() {
 							var pageUrl = $(ui.draggable).data("game-page");							
+							trackPageUrl(pageUrl);
 							$.mobile.changePage("#" + pageUrl);
 						});					
 					  }
