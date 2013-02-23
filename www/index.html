@@ -216,8 +216,8 @@
 				
 				$("#pageGame1").bind('pagebeforeshow', function() {
 					$("#scene-container, #sunset").css({ "width": $(window).width(), "height": $(window).height() });
-					$("#foreground").css({ "width": ($(window).width() * .3), "height": $(window).height() });
-					$("#fence").css({ "bottom": 225 - ($(window).width() * .3) });
+					$("#foreground").css({ "height": ($(window).width() * .3), "width": $(window).width() });
+					$("#fence").css({ "bottom": 225 - ($(window).height() * .3) });
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
