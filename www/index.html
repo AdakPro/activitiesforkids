@@ -215,13 +215,13 @@
 				var soundPlayer = new SoundPlayer();
 				
 				$("#pageGame1").bind('pagebeforeshow', function() {				
-					$("#scene-container, #sunset").css({ "width": $(window).width(), "height": $(window).height() });
-					$("#foreground").css({ "height": ($(window).height() * .3), "width": $(window).width() });
-					$("#fence").css({ "bottom": 225 - ($(window).height() * .3) });
+					$("#scene-container, #sunset").css({ "width": $(window).width() + "px", "height": $(window).height() + "px" });
+					$("#foreground").css({ "height": ($(window).height() * .3) + "px", "width": $(window).width() + "px" });
+					$("#fence").css({ "top": ($(window).height() - 270 + ( 225 - $(window).height() * .3 ) ) + "px" });
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
-								alert($(window).height() + " / " + $(window).height() * .3 + " .. " + 225 - $(window).height() * .3);
+								
 					$( "#sheep1" ).draggable();
 					$( "#flock" ).droppable({
 					  drop: function( event, ui ) {
@@ -302,7 +302,6 @@
 					width: 409px;
 					background: transparent url(images/count-sheep/fence.png) left bottom no-repeat;
 					position: absolute;
-					bottom: 0px;
 					left: 27%;
 					z-index: 5;
 				}
