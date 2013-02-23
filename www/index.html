@@ -103,7 +103,7 @@
 				var my_media = new Media(url,
 					// success callback
 					function() {
-						alert("playAudio():Audio Success");
+						//alert("playAudio():Audio Success");
 					},
 					// error callback
 					function(err) {
@@ -216,7 +216,8 @@
 				
 				$("#pageGame1").bind('pagebeforeshow', function() {
 					$("#scene-container, #sunset").css({ "width": $(window).width(), "height": $(window).height() });
-					
+					$("#foreground").css({ "width": ($(window).width() * .3), "height": $(window).height() });
+					$("#fence").css({ "bottom": 225 - ($(window).width() * .3) });
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
