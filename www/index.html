@@ -211,7 +211,7 @@
 				
 				$("#pageGame1").bind('pagebeforeshow', function() {				
 					$("#scene-container, #sunset").css({ "width": $(window).width() + "px", "height": $(window).height() + "px" });
-					var foregroundHeight = Math.min(($(window).height() * .4), 266);
+					var foregroundHeight = Math.min(($(window).height() * .5), 266);
 					$("#foreground-fence").css({ "height": foregroundHeight + "px", "width": $(window).width() + "px" });
 					//$("#fence").css({ "top": ($(window).height() - 270 + ( 225 - $(window).height() * .3 ) ) + "px" });
 				});
@@ -248,7 +248,7 @@
 				}
 				
 				function placeStar() {
-					$("#scene-container").append("<img src='images/count-sheep/star.png' class='star' style='width: " + getRandomInt(12, 27) + "; right: " + getRandomInt(0, ($(window).width() / 2)) + "px; top: " + getRandomInt(0, ( $(window).width() * .3 ) ) + "px' />");
+					$("#scene-container").append("<img src='images/count-sheep/star.png' class='star' style='width: " + getRandomInt(12, 27) + "; right: " + getRandomInt(0, ($(window).width() / 2)) + "px; top: " + getRandomInt(0, ( $(window).height() * .4 ) ) + "px' />");
 				}
 				
 				function getRandomInt (min, max) {
@@ -276,15 +276,16 @@
 				}
 				#flock {
 					position: absolute; 
-					right: 10px; 
-					bottom: 10px;
-					width: 31%; 
-					height: 44%;					
+					right: -20px; 
+					bottom: -20px;
+					width: 35%; 
+					height: 47%;					
 					z-index: 6;
+					border: 1px solid red;
 				}
 				.star {
 					position: absolute;
-					z-index: 6;
+					z-index: 5;
 				}
 				#moon {
 					height: 140px;
@@ -300,24 +301,7 @@
 					top: 60px;
 					font-weight: bold;
 					text-align: center;
-				}
-				#fence {
-					height: 270px;
-					width: 409px;
-					background: transparent url(images/count-sheep/fence.png) left bottom no-repeat;
-					position: absolute;
-					left: 27%;
-					z-index: 5;
-				}
-				#foreground {
-					height: 266px;
-					width: 800px;
-					background: transparent url(images/count-sheep/foreground.png) left bottom no-repeat;
-					position: absolute;
-					left: 0px;
-					bottom: 0px;						
-					z-index: 4;
-				}
+				}				
 				#foreground-fence {
 					height: 225px;
 					width: 800px;
@@ -346,7 +330,6 @@
                     <div id="moon">
                     	<div id="sheepCount"></div>
                     </div>
-                    <!-- <div id="fence"></div> -->
                     <div id="foreground-fence"></div>
                     <div id="sunset"></div>
                     
