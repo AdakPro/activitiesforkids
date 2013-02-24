@@ -100,18 +100,22 @@
 			//
 			function playAudio(url) {
 				// Play the audio file at url
-				var my_media = new Media(url,
-					// success callback
-					function() {
-						//alert("playAudio():Audio Success");
-					},
-					// error callback
-					function(err) {
-						alert("playAudio():Audio Error: " + err);
-				});
-			
-				// Play audio
-				my_media.play();
+				try {
+					var my_media = new Media(url,
+						// success callback
+						function() {
+							//alert("playAudio():Audio Success");
+						},
+						// error callback
+						function(err) {
+							alert("playAudio():Audio Error: " + err);
+					});
+				
+					// Play audio
+					my_media.play();
+				} catch(e) {
+					// there was a problem playing Media
+				}
 			}
 		</script>
 		
@@ -195,16 +199,7 @@
                         </td>
                     </tr>
                 </table>
-                
-                
-                
-                
-                <div id="dragStart" class="ui-widget-content">
-                  <p>Drag to Start</p>
-                </div>
-                 
-                
-
+                                 
 			</div><!-- /content -->
 
 		</div><!-- /page -->
@@ -216,8 +211,9 @@
 				
 				$("#pageGame1").bind('pagebeforeshow', function() {				
 					$("#scene-container, #sunset").css({ "width": $(window).width() + "px", "height": $(window).height() + "px" });
-					$("#foreground").css({ "height": ($(window).height() * .3) + "px", "width": $(window).width() + "px" });
-					$("#fence").css({ "top": ($(window).height() - 270 + ( 225 - $(window).height() * .3 ) ) + "px" });
+					var foregroundHeight = Math.min(($(window).height() * .4), 266);
+					$("#foreground-fence").css({ "height": foregroundHeight + "px", "width": $(window).width() + "px" });
+					//$("#fence").css({ "top": ($(window).height() - 270 + ( 225 - $(window).height() * .3 ) ) + "px" });
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
@@ -231,13 +227,13 @@
 						
 						$("#sheep1").fadeOut('slow', function() {
 							walkInNextSheep();
-							
+							placeStar();
 							var $flockedSheep = $("<img src='images/count-sheep/sheep-1.png' class='flockedSheep' />");
 							var bottomRandom = getRandomInt(0, 120);
 							var rightRandom = getRandomInt(0, 290);
 							var sizeRandom = getRandomInt(60, 100);
 							$($flockedSheep).css({ "height": sizeRandom + "px", "width": sizeRandom + "px", "right": rightRandom + "px", "bottom": bottomRandom + "px", "z-index": 50 - sheepCounted});
-							$("#scene-container").append($flockedSheep);							
+							//$("#scene-container").append($flockedSheep);							
 						});					
 					  }
 					});
@@ -249,6 +245,10 @@
 					$("#sheep1").css({ "left": "-100px", "bottom": "50px" }).show().animate({"left":"60px", "bottom" : "50px" }, "slow");
 					var soundUrl = getPhoneGapPath() + "sounds/sheep.wav";
 					playAudio(soundUrl);
+				}
+				
+				function placeStar() {
+					$("#scene-container").append("<img src='images/count-sheep/star.png' class='star' style='width: " + getRandomInt(12, 27) + "; right: " + getRandomInt(0, ($(window).width() / 2)) + "px; top: " + getRandomInt(0, ( $(window).width() * .3 ) ) + "px' />");
 				}
 				
 				function getRandomInt (min, max) {
@@ -282,6 +282,10 @@
 					height: 44%;					
 					z-index: 6;
 				}
+				.star {
+					position: absolute;
+					z-index: 6;
+				}
 				#moon {
 					height: 140px;
 					width: 140px;
@@ -306,9 +310,18 @@
 					z-index: 5;
 				}
 				#foreground {
-					height: 225px;
+					height: 266px;
 					width: 800px;
 					background: transparent url(images/count-sheep/foreground.png) left bottom no-repeat;
+					position: absolute;
+					left: 0px;
+					bottom: 0px;						
+					z-index: 4;
+				}
+				#foreground-fence {
+					height: 225px;
+					width: 800px;
+					background: transparent url(images/count-sheep/foreground-fence.png) left top no-repeat;
 					position: absolute;
 					left: 0px;
 					bottom: 0px;						
@@ -333,8 +346,8 @@
                     <div id="moon">
                     	<div id="sheepCount"></div>
                     </div>
-                    <div id="fence"></div>
-                    <div id="foreground"></div>
+                    <!-- <div id="fence"></div> -->
+                    <div id="foreground-fence"></div>
                     <div id="sunset"></div>
                     
                 	<div id="sheep1">&nbsp;</div>
