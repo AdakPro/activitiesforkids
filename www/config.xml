@@ -54,7 +54,7 @@
 	<gap:plugin name="Notification" value="org.apache.cordova.Notification"/>
 	<gap:plugin name="Storage" value="org.apache.cordova.Storage" />
 	
-	<gap:plugin name="BarcodeScanner" /> <!-- latest release -->
+	<!-- <gap:plugin name="BarcodeScanner" /> latest release -->
 	<!-- <gap:plugin name="Analytics" /> latest release -->
 	
 	<access origin="*" />
