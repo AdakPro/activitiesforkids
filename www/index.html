@@ -214,6 +214,7 @@
 					var foregroundHeight = Math.min(($(window).height() * .5), 266);
 					$("#foreground-fence").css({ "height": foregroundHeight + "px", "width": $(window).width() + "px" });
 					//$("#fence").css({ "top": ($(window).height() - 270 + ( 225 - $(window).height() * .3 ) ) + "px" });
+					sheepCounted = 0;
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
@@ -236,7 +237,12 @@
 							//$("#scene-container").append($flockedSheep);							
 						});		
 						if (sheepCounted == 5) {
-							$( "#.popFinishedSheep" ).popup("open");
+							$( "#popFinishedSheep" ).popup("open", { transition: "slidedown"});
+							$( "#popFinishedSheep" ).bind({
+								popupafterclose: function(event, ui) { 
+									$.mobile.changePage("#pageHome");
+								}
+							});
 						}
 					  }
 					});
@@ -321,6 +327,9 @@
 					left: 0px;
 					z-index: 1;
 				}
+				#popFinishedSheep {
+					padding: 20px;
+				}
 			</style>
         
 			<!-- <div data-role="header">
@@ -339,12 +348,13 @@
                 	<div id="sheep1">&nbsp;</div>
                     <div id="flock">&nbsp;</div>
                 </div> 
+                
+                <div data-role="popup" id="popFinishedSheep" class="ui-content">
+					<p>You counted 5 sheep!  Good night...</p>
+				</div>
 			</div><!-- /content -->
 			
-			<div data-role="popup" id="popFinishedSheep">
-				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-				You counted 5 sheep!  Good night...
-			</div>
+			
 		</div><!-- /page -->
     	
         <div data-role="page" id="pageGame2">
