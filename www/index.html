@@ -234,7 +234,10 @@
 							var sizeRandom = getRandomInt(60, 100);
 							$($flockedSheep).css({ "height": sizeRandom + "px", "width": sizeRandom + "px", "right": rightRandom + "px", "bottom": bottomRandom + "px", "z-index": 50 - sheepCounted});
 							//$("#scene-container").append($flockedSheep);							
-						});					
+						});		
+						if (sheepCounted == 5) {
+							$( "#.popFinishedSheep" ).popup("open");
+						}
 					  }
 					});
 				
@@ -281,7 +284,7 @@
 					width: 35%; 
 					height: 47%;					
 					z-index: 6;
-					border: 1px solid red;
+					border: 1px dashed #eee;
 				}
 				.star {
 					position: absolute;
@@ -337,7 +340,11 @@
                     <div id="flock">&nbsp;</div>
                 </div> 
 			</div><!-- /content -->
-
+			
+			<div data-role="popup" id="popFinishedSheep">
+				<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				You counted 5 sheep!  Good night...
+			</div>
 		</div><!-- /page -->
     	
         <div data-role="page" id="pageGame2">
