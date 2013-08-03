@@ -140,7 +140,7 @@
 						$( this ).find( "p" ).html( "Lets Play!" );
 						$(ui.draggable).fadeOut('slow', function() {
 							var pageUrl = $(ui.draggable).data("game-page");							
-							//trackPageUrl(pageUrl);
+							trackPageUrl(pageUrl);
 							$.mobile.changePage("#" + pageUrl);
 						});					
 					  }
@@ -215,6 +215,7 @@
 					$("#foreground-fence").css({ "height": foregroundHeight + "px", "width": $(window).width() + "px" });
 					//$("#fence").css({ "top": ($(window).height() - 270 + ( 225 - $(window).height() * .3 ) ) + "px" });
 					sheepCounted = 0;
+					$("#sheepCount").html("");
 				});
 				
 				$("#pageGame1").bind('pageshow', function() {
