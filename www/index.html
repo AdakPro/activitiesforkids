@@ -13,7 +13,7 @@
         <script src="js/jquery.mobile.1.2.min.js"></script>  
         <script src="js/sounds.js"></script>
 		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-		<script src="GAPlugin.js"></script>
+		<!--  <script src="GAPlugin.js"></script> -->
 		<script src="js/jquery.ui.touch.punch.min.js"></script>
         
         <style type="text/css">
@@ -140,7 +140,7 @@
 						$( this ).find( "p" ).html( "Lets Play!" );
 						$(ui.draggable).fadeOut('slow', function() {
 							var pageUrl = $(ui.draggable).data("game-page");							
-							trackPageUrl(pageUrl);
+							//trackPageUrl(pageUrl);
 							$.mobile.changePage("#" + pageUrl);
 						});					
 					  }
