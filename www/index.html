@@ -12,8 +12,7 @@
 		<script src="js/jquery-ui-1.10.1.custom.min.js"></script>   
         <script src="js/jquery.mobile.1.2.min.js"></script>  
         <script src="js/sounds.js"></script>
-		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-		<!--  <script src="GAPlugin.js"></script> -->
+		<!-- <script type="text/javascript" charset="utf-8" src="cordova.js"></script> -->
 		<script src="js/jquery.ui.touch.punch.min.js"></script>
         
         <style type="text/css">
@@ -35,17 +34,18 @@
 		</style>
         
 		<script type="text/javascript" charset="utf-8">
-									
+			
+			var gaPlugin;
+			document.addEventListener("deviceready", myDeviceReadyListener, false);			
+
 			$(function() {
-				// on exit
 				try {
 					gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);				
 				} finally {
 				}				
 			});
 			
-			var gaPlugin;
-			document.addEventListener("deviceready", myDeviceReadyListener, false);
+			
 			
 			function myDeviceReadyListener() {			
 				gaPlugin = window.plugins.gaPlugin;
@@ -183,7 +183,7 @@
                     </tr>
                     <tr style="height: 50%;">
                     	<td style="width: 33%;">
-                        	<div id="" class="gameTile" data-game-page="pageGame3">
+                        	<div id="" class="gameTile" data-game-page="pagePuzzleGame">
                                 <img src="images/puzzle_game.png" alt="Puzzles" />
                             </div>
                         </td>
@@ -204,6 +204,17 @@
 
 		</div><!-- /page -->
         
+<!-- 
+ _______  _______           _       _________   _______           _______  _______  _______ 
+(  ____ \(  ___  )|\     /|( (    /|\__   __/  (  ____ \|\     /|(  ____ \(  ____ \(  ____ )
+| (    \/| (   ) || )   ( ||  \  ( |   ) (     | (    \/| )   ( || (    \/| (    \/| (    )|
+| |      | |   | || |   | ||   \ | |   | |     | (_____ | (___) || (__    | (__    | (____)|
+| |      | |   | || |   | || (\ \) |   | |     (_____  )|  ___  ||  __)   |  __)   |  _____)
+| |      | |   | || |   | || | \   |   | |           ) || (   ) || (      | (      | (      
+| (____/\| (___) || (___) || )  \  |   | |     /\____) || )   ( || (____/\| (____/\| )      
+(_______/(_______)(_______)|/    )_)   )_(     \_______)|/     \|(_______/(_______/|/      
+-->
+
         <div data-role="page" id="pageGame1" data-cache="never" style="overflow:hidden;">
         	<script>
 				var sheepCounted = 0;
@@ -271,7 +282,7 @@
             <style type="text/css">
 				#scene-container {
 					position: relative; 
-					width: 100%;; 
+					width: 100%; 
 					background-color: #000;
 				}
 				#sheep1 {
@@ -357,7 +368,18 @@
 			
 			
 		</div><!-- /page -->
-    	
+
+<!-- 
+ _______  _______ _________ _______             _______  _______  _______  _______ 
+(       )(  ___  )\__   __/(  ____ \|\     /|  (  ____ \(  ___  )(       )(  ____ \
+| () () || (   ) |   ) (   | (    \/| )   ( |  | (    \/| (   ) || () () || (    \/
+| || || || (___) |   | |   | |      | (___) |  | |      | (___) || || || || (__    
+| |(_)| ||  ___  |   | |   | |      |  ___  |  | | ____ |  ___  || |(_)| ||  __)   
+| |   | || (   ) |   | |   | |      | (   ) |  | | \_  )| (   ) || |   | || (      
+| )   ( || )   ( |   | |   | (____/\| )   ( |  | (___) || )   ( || )   ( || (____/\
+|/     \||/     \|   )_(   (_______/|/     \|  (_______)|/     \||/     \|(_______/
+-->
+
         <div data-role="page" id="pageGame2">
         	<script type="text/javascript">
 				$("#pageGame2").bind("pagebeforeshow", function() {
@@ -371,16 +393,110 @@
         
         </div> <!-- /page -->
         
-        <div data-role="page" id="pageGame3">
+<!--                                                  
+ _______           _______  _______  _        _______   	 _______  _______  _______  _______ 
+(  ____ )|\     /|/ ___   )/ ___   )( \      (  ____ \  	(  ____ \(  ___  )(       )(  ____ \
+| (    )|| )   ( |\/   )  |\/   )  || (      | (    \/  	| (    \/| (   ) || () () || (    \/
+| (____)|| |   | |    /   )    /   )| |      | (__      	| |      | (___) || || || || (__    
+|  _____)| |   | |   /   /    /   / | |      |  __)     	| | ____ |  ___  || |(_)| ||  __)   
+| (      | |   | |  /   /    /   /  | |      | (        	| | \_  )| (   ) || |   | || (      
+| )      | (___) | /   (_/\ /   (_/\| (____/\| (____/\  	| (___) || )   ( || )   ( || (____/\
+|/       (_______)(_______/(_______/(_______/(_______/  	(_______)|/     \||/     \|(_______/
+-->
+
+        <div data-role="page" id="pagePuzzleGame">
         	<script type="text/javascript">
-				$("#pageGame3").bind("pagebeforeshow", function() {
-										
+        		var tolerance = 10;
+        		var piecesSnapped = 0;
+
+				$("#pagePuzzleGame").bind("pagebeforeshow", function() {
+					newPuzzle();					
 				});			
 				
+				function newPuzzle() {
+					piecesSnapped = 0;
+					$("#tableGrid td").addClass("borders");
+					
+					$( ".piece1" ).show().draggable({snap: ".tile1", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece2" ).show().draggable({snap: ".tile2", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece3" ).show().draggable({snap: ".tile3", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece4" ).show().draggable({snap: ".tile4", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece5" ).show().draggable({snap: ".tile5", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece6" ).show().draggable({snap: ".tile6", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					
+					$( ".tile" ).droppable({
+					  drop: function( event, ui ) {
+					  	// test for correct piece
+					  	if ($(ui.draggable).data("piece-number") == $(this).data("tile-position"))
+						{
+							//Get pos offset
+							var offset = $(this).offset();
+
+							//set piece exactly where it should be
+							$(ui.draggable).offset({ top: offset.top, left: offset.left})
+
+							$(ui.draggable).fadeTo('slow', 0.33);					
+							$(ui.draggable).draggable('disable');
+
+							piecesSnapped++;
+						}
+						if (piecesSnapped == $(".tile").length){
+							$("#tableGrid td").removeClass("borders");
+							$(".gamePiece").fadeTo("fast", 1);
+						}
+					  }
+					});
+
+					scatterPieces();
+				}
+
+				function scatterPieces() {
+					$(".piece").each(function(item, i) {
+						var topRandom = getRandomInt(100, 300);
+						var leftRandom = getRandomInt(100, 500);
+						console.log(topRandom + ", " + leftRandom);
+						$(i).css({ "left": leftRandom + "px", "top": topRandom + "px" });
+					});					
+				}
+
 			</script>
+			<style>
+				#tableGrid { width: 600px; height: 400px; margin-left: auto; margin-right: auto; background-color: #ccc}
+				#tableGrid td { width: 200px; height: 200px; }
+				#tableGrid tr:nth-child(even) td.borders { border-top: none;}
+				.borders { border: 1px dashed #ddd; }
+				.piece { width: 200px; height: 200px; background-color: #ddd; position: absolute; left: 200px; background-image: url("images/mich31.png"); background-repeat: no-repeat; }			 	
+			 	.piece1 { background-position: 0px 0px; }
+				.piece2 { background-position: -200px 0px; }
+				.piece3 { background-position: -400px 0px; }
+				.piece4 { background-position: 0px -200px; }
+				.piece5 { background-position: -200px -200px; }
+				.piece6 { background-position: -400px -200px; }
+			</style>
         	        	
         	<div data-role="content">
-				<p>Puzzle game go!</p>
+        		<div style="position: relative;">
+					<table id="tableGrid" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="tile tile1" data-tile-position="1"></td>
+							<td class="tile tile2" data-tile-position="2"></td>
+							<td class="tile tile3" data-tile-position="3"></td>
+						</tr>
+						<tr>
+							<td class="tile tile4" data-tile-position="4"></td>
+							<td class="tile tile5" data-tile-position="5"></td>
+							<td class="tile tile6" data-tile-position="6"></td>
+						</tr>
+					</table>
+					<div id="puzzlePieces">
+						<div class="piece piece1" data-piece-number="1"></div>
+						<div class="piece piece2" data-piece-number="2"></div>
+						<div class="piece piece3" data-piece-number="3"></div>
+						<div class="piece piece4" data-piece-number="4"></div>
+						<div class="piece piece5" data-piece-number="5"></div>
+						<div class="piece piece6" data-piece-number="6"></div>
+					</div>
+				</div>
             </div>
         
         </div> <!-- /page -->
