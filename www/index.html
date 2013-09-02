@@ -36,14 +36,14 @@
 		<script type="text/javascript" charset="utf-8">
 			
 			var gaPlugin;
-			document.addEventListener("deviceready", myDeviceReadyListener, false);			
+			//document.addEventListener("deviceready", myDeviceReadyListener, false);			
 
-			$(function() {
-				try {
-					gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);				
-				} finally {
-				}				
-			});
+			// $(function() {
+			// 	try {
+			// 		gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);				
+			// 	} finally {
+			// 	}				
+			// });
 			
 			
 			
@@ -408,21 +408,30 @@
         	<script type="text/javascript">
         		var tolerance = 10;
         		var piecesSnapped = 0;
+				var puzzles;
 
 				$("#pagePuzzleGame").bind("pagebeforeshow", function() {
+					puzzles = new Array("puzzle_1", "puzzle_2", "puzzle_3", "puzzle_4", "puzzle_5");	
 					newPuzzle();					
 				});			
 				
 				function newPuzzle() {
+					setRandomImage();
 					piecesSnapped = 0;
-					$("#tableGrid td").addClass("borders");
+					$("#tableGrid td").addClass("borders").removeClass("no-border");
 					
 					$( ".piece1" ).show().draggable({snap: ".tile1", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece1" ).draggable("enable");
 					$( ".piece2" ).show().draggable({snap: ".tile2", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece2" ).draggable("enable");
 					$( ".piece3" ).show().draggable({snap: ".tile3", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece3" ).draggable("enable");
 					$( ".piece4" ).show().draggable({snap: ".tile4", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece4" ).draggable("enable");
 					$( ".piece5" ).show().draggable({snap: ".tile5", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece5" ).draggable("enable");
 					$( ".piece6" ).show().draggable({snap: ".tile6", snapMode: "inner", snapTolerance: tolerance, stack: "#puzzlePieces .piece" });
+					$( ".piece6" ).draggable("enable");
 					
 					$( ".tile" ).droppable({
 					  drop: function( event, ui ) {
@@ -435,14 +444,24 @@
 							//set piece exactly where it should be
 							$(ui.draggable).offset({ top: offset.top, left: offset.left})
 
-							$(ui.draggable).fadeTo('slow', 0.33);					
+							$(ui.draggable).fadeTo('slow', 0.4);					
 							$(ui.draggable).draggable('disable');
-
+							$(ui.draggable).css("z-index", "0").removeClass("free");
 							piecesSnapped++;
 						}
+						
 						if (piecesSnapped == $(".tile").length){
-							$("#tableGrid td").removeClass("borders");
-							$(".gamePiece").fadeTo("fast", 1);
+							$("#tableGrid td").removeClass("borders").addClass("no-border");
+							$(".piece").fadeTo("fast", 1);
+							setTimeout(newPuzzle, 4000);
+						} 
+						else {
+							$(".piece").each(function(item, i) {
+								if ($(i).hasClass(".free"))
+								{
+									$(i).css("z-index", "100");
+								}
+							});
 						}
 					  }
 					});
@@ -452,30 +471,50 @@
 
 				function scatterPieces() {
 					$(".piece").each(function(item, i) {
-						var topRandom = getRandomInt(100, 300);
-						var leftRandom = getRandomInt(100, 500);
-						console.log(topRandom + ", " + leftRandom);
+						var topRandom = getRandomInt(0, 300);
+						var leftRandom = getRandomInt(100, 440);
 						$(i).css({ "left": leftRandom + "px", "top": topRandom + "px" });
+						$(i).addClass("free");
 					});					
+				}
+
+				function setRandomImage(){
+					if (puzzles.length > 0) {
+						var indexRandom = getRandomInt(0, puzzles.length - 1);
+						$(".piece").css("background-image", "url(images/" + puzzles[indexRandom] + ".png)");
+						puzzles.splice(indexRandom, 1);
+					} else {
+						$.mobile.changePage("#pageHome");
+					}
 				}
 
 			</script>
 			<style>
-				#tableGrid { width: 600px; height: 400px; margin-left: auto; margin-right: auto; background-color: #ccc}
-				#tableGrid td { width: 200px; height: 200px; }
+				#tableGrid { width: 540px; height: 360px; margin-left: auto; margin-right: auto; background-color: #ccc; border-spacing: 0px; border: none;}
+				#tableGrid tr { border: none; border-spacing: 0; }
+				#tableGrid td { width: 180px; height: 180px; }
 				#tableGrid tr:nth-child(even) td.borders { border-top: none;}
-				.borders { border: 1px dashed #ddd; }
-				.piece { width: 200px; height: 200px; background-color: #ddd; position: absolute; left: 200px; background-image: url("images/mich31.png"); background-repeat: no-repeat; }			 	
+				.borders { border: 1px dashed #aaa; }
+				.no-border { border: none; border-collapse: collapse; }
+				.piece { width: 180px; height: 180px; background-color: #ddd; position: absolute; background-image: url("images/puzzle_1.png"); background-repeat: no-repeat; z-index: 100;}			 	
 			 	.piece1 { background-position: 0px 0px; }
-				.piece2 { background-position: -200px 0px; }
-				.piece3 { background-position: -400px 0px; }
-				.piece4 { background-position: 0px -200px; }
-				.piece5 { background-position: -200px -200px; }
-				.piece6 { background-position: -400px -200px; }
+				.piece2 { background-position: -180px 0px; }
+				.piece3 { background-position: -360px 0px; }
+				.piece4 { background-position: 0px -180px; }
+				.piece5 { background-position: -180px -180px; }
+				.piece6 { background-position: -360px -180px; }
 			</style>
         	        	
         	<div data-role="content">
         		<div style="position: relative;">
+					<div id="puzzlePieces">
+						<div class="piece piece1 free" data-piece-number="1"></div>
+						<div class="piece piece2 free" data-piece-number="2"></div>
+						<div class="piece piece3 free" data-piece-number="3"></div>
+						<div class="piece piece4 free" data-piece-number="4"></div>
+						<div class="piece piece5 free" data-piece-number="5"></div>
+						<div class="piece piece6 free" data-piece-number="6"></div>
+					</div>
 					<table id="tableGrid" cellpadding="0" cellspacing="0">
 						<tr>
 							<td class="tile tile1" data-tile-position="1"></td>
@@ -488,14 +527,7 @@
 							<td class="tile tile6" data-tile-position="6"></td>
 						</tr>
 					</table>
-					<div id="puzzlePieces">
-						<div class="piece piece1" data-piece-number="1"></div>
-						<div class="piece piece2" data-piece-number="2"></div>
-						<div class="piece piece3" data-piece-number="3"></div>
-						<div class="piece piece4" data-piece-number="4"></div>
-						<div class="piece piece5" data-piece-number="5"></div>
-						<div class="piece piece6" data-piece-number="6"></div>
-					</div>
+					
 				</div>
             </div>
         
