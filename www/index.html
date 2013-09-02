@@ -409,6 +409,7 @@
 				var puzzles;
 				var clickSounds = new Array("click_1", "click_2", "click_3", "click_4");
 				var applauseSounds = new Array("applause_1", "applause_8");
+				var endTitles = new Array("You Did It!", "Good Job!", "Nice Work", "Way To Go!", "You Rock");
 
 				$("#pagePuzzleGame").bind("pagebeforeshow", function() {
 					puzzles = new Array("puzzle_1", "puzzle_2", "puzzle_3", "puzzle_4", "puzzle_5", "puzzle_6", "puzzle_7", "puzzle_8", "puzzle_9", "puzzle_10", "puzzle_11", "puzzle_12");	
@@ -439,24 +440,31 @@
 					  	if ($(ui.draggable).data("piece-number") == $(this).data("tile-position"))
 						{
 							clickSound();
+							piecesSnapped++;
 
 							//Get pos offset
 							var offset = $(this).offset();
 
 							//set piece exactly where it should be
 							$(ui.draggable).offset({ top: offset.top, left: offset.left})
+							
+							// only fade out if not last piece
+							if (piecesSnapped != $(".tile").length)
+							{
+								$(ui.draggable).fadeTo('slow', 0.4);		
+							}
 
-							$(ui.draggable).fadeTo('slow', 0.4);					
 							$(ui.draggable).draggable('disable');
 							$(ui.draggable).css("z-index", "0").removeClass("free");
-							piecesSnapped++;
+							
 						}
 						
 						if (piecesSnapped == $(".tile").length){
 							$("#tableGrid .tile").removeClass("borders").addClass("no-border");
 							applauseSound();
+							endTitleSequence();
 							$(".piece").fadeTo("fast", 1);
-							//setTimeout(newPuzzle, 4000);
+							setTimeout(newPuzzle, 5500);
 						} 
 						else {
 							$(".piece").each(function(item, i) {
@@ -503,6 +511,50 @@
 					playAudio(soundUrl);
 				}
 
+
+				function endTitleSequence() {
+					// help from here: http://james.padolsey.com/demos/falling-text/
+					var randomTitle = getRandomInt(0, endTitles.length);
+					$("#endTitle").html(endTitles[randomTitle]);
+
+					var p = $("#endTitle");
+					var spans = $('<span>' + p.text().split('').join('</span><span>') + '</span>');
+	                var originalContent = p.html();
+                
+		            p.height(p.height()).html(spans);
+		            
+		            var spanDimensions = $.map(spans, function(span){
+		                return $(span).position();
+		            });
+		            
+		            spans.css({
+		                position: 'absolute',
+		                top: -(p.offset().top + 100)
+		            });
+		            
+		            p.css('visibility', 'visible');
+		            
+		            setTimeout(function(){
+		                
+		                /* Wait a bit before we begin... */		                
+		                spans.each(function(i, span){
+		                    
+		                    $(span).css('left', Math.random() * p.width());
+		                    
+		                    setTimeout(function(){
+		                        $(span).animate(spanDimensions[i], 400, !spans[i+1] && function(){
+		                            p.html(originalContent);    
+		                        });
+		                    }, i * 50)
+		                    
+		                });
+		                
+		            }, 500);
+
+		            setTimeout(function() {
+	            		$("#endTitle").css('visibility', 'hidden');
+		            }, 4000);
+				}
 			</script>
 			<style>
 				#tableGrid { width: 543px; height: 360px; margin-left: auto; margin-right: auto; border-spacing: 0px; border: none;}
@@ -523,6 +575,7 @@
 				.piece4 { background-position: 0px -180px; }
 				.piece5 { background-position: -180px -180px; }
 				.piece6 { background-position: -360px -180px; }
+				#endTitle { visibility: hidden; position: relative; top: -270px; float: left; z-index: 2000; display: block; width: 100%; text-align: center; font-size: 4em; color: #f12004;}
 			</style>
         	        	
         	<div data-role="content" style="background-color: #fff999;">
@@ -535,18 +588,6 @@
 						<div class="piece piece5 free" data-piece-number="5"></div>
 						<div class="piece piece6 free" data-piece-number="6"></div>
 					</div>
-					<!-- <table id="tableGrid" cellpadding="0" cellspacing="0">
-						<tr>
-							<td class="tile tile1" data-tile-position="1"></td>
-							<td class="tile tile2" data-tile-position="2"></td>
-							<td class="tile tile3" data-tile-position="3"></td>
-						</tr>
-						<tr>
-							<td class="tile tile4" data-tile-position="4"></td>
-							<td class="tile tile5" data-tile-position="5"></td>
-							<td class="tile tile6" data-tile-position="6"></td>
-						</tr>
-					</table> -->
 					<div id="tableGrid">
 						<div class="tile tile1" data-tile-position="1"></div>
 						<div class="tile tile2" data-tile-position="2"></div>
@@ -556,6 +597,9 @@
 						<div class="tile tile6" data-tile-position="6"></div>
 					</div>
 				</div>
+				
+				<h1 id="endTitle">You Did It!</h1>
+				
             </div>
         
         </div> <!-- /page -->
