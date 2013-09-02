@@ -383,11 +383,14 @@
         	<script type="text/javascript">
 				$("#pageGame2").bind("pagebeforeshow", function() {
 					$("#test1").css({ "width": ($(window).width() - 1) + "px", "height": ($(window).height() - 1) + "px", "border": "2px solid red" });
+
+					$("#phonegapPath").html(getPhoneGapPath());
 				});
 			</script>
         	        	
         	<div data-role="content">
             	<div id="test1">Match Game!</div>                
+            	<div id="phonegapPath"></div>
             </div>
         
         </div> <!-- /page -->
@@ -558,6 +561,7 @@
 				}
 			</script>
 			<style>
+				#pagePuzzleGame { height: 360px; overflow: hidden; }
 				#tableGrid { width: 543px; height: 360px; margin-left: auto; margin-right: auto; border-spacing: 0px; border: none;}
 				#tableGrid tr { border: none; border-spacing: 0; }
 				#tableGrid td, #tableGrid .tile { width: 180px; height: 180px; }
