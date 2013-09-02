@@ -385,6 +385,9 @@
 					$("#test1").css({ "width": ($(window).width() - 1) + "px", "height": ($(window).height() - 1) + "px", "border": "2px solid red" });
 
 					$("#phonegapPath").html(getPhoneGapPath());
+
+					var soundPlayer = new SoundPlayer();
+					soundPlayer.Sheep();
 				});
 			</script>
         	        	
@@ -486,8 +489,8 @@
 
 				function scatterPieces() {
 					$(".piece").each(function(item, i) {
-						var topRandom = getRandomInt(0, 300);
-						var leftRandom = getRandomInt(100, 440);
+						var topRandom = getRandomInt(0, 290);
+						var leftRandom = getRandomInt(50, 460);
 						$(i).css({ "left": leftRandom + "px", "top": topRandom + "px" });
 						$(i).addClass("free");
 					});					
