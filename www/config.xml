@@ -56,7 +56,7 @@
 	
 	<!-- <gap:plugin name="BarcodeScanner" /> latest release -->
 	
-	<gap:plugin name="Analytics" /> <!-- latest release -->
+	<!-- <gap:plugin name="Analytics" /> latest release -->
 	
 	<access origin="*" />
 
