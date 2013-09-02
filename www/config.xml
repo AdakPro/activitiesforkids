@@ -51,7 +51,7 @@
 	<!-- <gap:plugin name="Accelerometer" value="org.apache.cordova.AccelListener" /> -->
 	<!-- <gap:plugin name="Device" value="org.apache.cordova.Device" /> -->
 	<!-- <gap:plugin name="File" value="org.apache.cordova.FileUtils" /> -->
-	<gap:plugin name="Media" value="org.apache.cordova.AudioHandler" />
+	<!-- <gap:plugin name="Media" value="org.apache.cordova.AudioHandler" /> -->
 	<!-- <gap:plugin name="Notification" value="org.apache.cordova.Notification"/> -->
 	<!-- <gap:plugin name="Storage" value="org.apache.cordova.Storage" /> -->
 	
